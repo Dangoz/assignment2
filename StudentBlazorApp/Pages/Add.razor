@@ -1,0 +1,52 @@
+@page "/add"
+@using StudentBlazorApp.Models
+@inject HttpClient httpClient
+@inject NavigationManager NavManager
+
+<div>Add Form</div>
+
+<EditForm Model="@student" OnValidSubmit="@HandleAdd">
+  <DataAnnotationsValidator />
+  <ValidationSummary />
+
+  <InputText placeholder="First Name" id="firstName" @bind-Value="@student.FirstName" />
+  <br />
+  <InputText placeholder="Last Name" id="lastName" @bind-Value="@student.LastName" />
+  <br />
+  <InputText placeholder="Email" id="email" @bind-Value="@student.Email" />
+  <br />
+  <InputText placeholder="Phone" id="phone" @bind-Value="@student.MobileNumber" />
+  <br />
+  <InputText placeholder="Specialization" id="specialization" @bind-Value="@student.Specialization" />
+  <br />
+  <InputText placeholder="City" id="city" @bind-Value="@student.City" />
+  <br />
+  <InputText placeholder="Province" id="province" @bind-Value="@student.Province" />
+  <br />
+  <InputText placeholder="Employer" id="employer" @bind-Value="@student.Employer" />
+  <br />
+
+  <button type=" submit">Submit</button>
+</EditForm>
+
+@code {
+  string baseUrl = "https://localhost:6001/";
+  private Student student = new Student();
+
+  private async void HandleAdd()
+  {
+    string endpoint = $"{baseUrl}api/students";
+
+    student.StudentId = Guid.NewGuid().ToString();
+
+    await httpClient.PostAsJsonAsync(endpoint, student);
+
+    StateHasChanged(); // causes the page to get automatically refreshed
+    Redirect();
+  }
+
+  private void Redirect()
+  {
+    NavManager.NavigateTo("/");
+  }
+}

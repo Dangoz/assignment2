@@ -1,0 +1,71 @@
+@page "/edit"
+@page "/edit/{studentId}"
+@using StudentBlazorApp.Models
+@inject HttpClient httpClient
+@inject NavigationManager NavManager
+
+<div>Edit Form</div>
+
+<EditForm Model="@student" OnValidSubmit="@HandleUpdate">
+  <DataAnnotationsValidator />
+  <ValidationSummary />
+
+  <InputText placeholder="First Name" id="firstName" @bind-Value="@student.FirstName" />
+  <br />
+  <InputText placeholder="Last Name" id="lastName" @bind-Value="@student.LastName" />
+  <br />
+  <InputText placeholder="Email" id="email" @bind-Value="@student.Email" />
+  <br />
+  <InputText placeholder="Phone" id="phone" @bind-Value="@student.MobileNumber" />
+  <br />
+  <InputText placeholder="Specialization" id="specialization" @bind-Value="@student.Specialization" />
+  <br />
+  <InputText placeholder="City" id="city" @bind-Value="@student.City" />
+  <br />
+  <InputText placeholder="Province" id="province" @bind-Value="@student.Province" />
+  <br />
+  <InputText placeholder="Employer" id="employer" @bind-Value="@student.Employer" />
+  <br />
+
+  <button type="submit" class="btn btn-success">Submit</button>
+</EditForm>
+
+@code {
+  string baseUrl = "https://localhost:6001/";
+  private Student student = new Student();
+  [Parameter]
+  public string StudentId { get; set; }
+
+  protected override async Task OnInitializedAsync()
+  {
+    await ShowEdit(StudentId);
+  }
+
+  protected async Task ShowEdit(string id)
+  {
+    Student s = await httpClient.GetFromJsonAsync<Student>($"{baseUrl}api/students/{id}");
+    student.StudentId = s.StudentId;
+    student.FirstName = s.FirstName;
+    student.LastName = s.LastName;
+    student.Email = s.Email;
+    student.MobileNumber = s.MobileNumber;
+    student.Specialization = s.Specialization;
+    student.City = s.City;
+    student.Province = s.Province;
+    student.Employer = s.Employer;
+  }
+  private async void HandleUpdate()
+  {
+    string endpoint = $"{baseUrl}api/students/{student.StudentId}";
+
+    await httpClient.PutAsJsonAsync(endpoint, student);
+
+    StateHasChanged(); // causes the page to get automatically refreshed
+    Redirect();
+  }
+
+  private void Redirect()
+  {
+    NavManager.NavigateTo("/");
+  }
+}
