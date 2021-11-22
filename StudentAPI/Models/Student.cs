@@ -7,7 +7,6 @@ namespace StudentAPI.Models
   {
     [Key]
     [Display(Name = "ID #")]
-    [Required]
     public string StudentId { get; set; }
 
     [Display(Name = "First Name")]
