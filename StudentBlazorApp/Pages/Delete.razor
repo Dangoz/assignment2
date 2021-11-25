@@ -4,32 +4,32 @@
 @inject HttpClient httpClient
 @inject NavigationManager NavManager
 
-<div>Delete Form</div>
-
-<EditForm Model="@student" OnValidSubmit="@HandleDelete">
-  <DataAnnotationsValidator />
-  <ValidationSummary />
-
-  <InputText placeholder="First Name" id="firstName" @bind-Value="@student.FirstName" />
-  <br />
-  <InputText placeholder="Last Name" id="lastName" @bind-Value="@student.LastName" />
-  <br />
-  <InputText placeholder="Email" id="email" @bind-Value="@student.Email" />
-  <br />
-  <InputText placeholder="Phone" id="phone" @bind-Value="@student.MobileNumber" />
-  <br />
-  <InputText placeholder="Specialization" id="specialization" @bind-Value="@student.Specialization" />
-  <br />
-  <InputText placeholder="City" id="city" @bind-Value="@student.City" />
-  <br />
-  <InputText placeholder="Province" id="province" @bind-Value="@student.Province" />
-  <br />
-  <InputText placeholder="Employer" id="employer" @bind-Value="@student.Employer" />
-  <br />
-
-
-  <button type="submit" value="Delete" class="btn btn-danger">Submit</button>
-</EditForm>
+<div><h1>Delete Student Confirmation Page</h1></div>
+@if (student == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+  <NavLink class="btn btn-primary" href="/">Return</NavLink>
+  <table class='table table-hover'>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@student.StudentId</td>
+            <td>@student.FirstName</td>
+            <td>@student.LastName</td>
+            <td><button class="btn btn-danger btn-sm" @onclick="@HandleDelete">del</button></td>
+        </tr>
+      </tbody>
+  </table>
+}
 
 @code {
   string baseUrl = "https://localhost:6001/";

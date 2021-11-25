@@ -3,8 +3,8 @@
 @inject HttpClient httpClient
 @inject NavigationManager NavManager
 
-<div>Add Form</div>
-
+<div><h1>Add Students Page</h1></div>
+<NavLink href="/" class="btn btn-primary">Return</NavLink>
 <EditForm Model="@student" OnValidSubmit="@HandleAdd">
   <DataAnnotationsValidator />
   <ValidationSummary />
@@ -26,7 +26,7 @@
   <InputText placeholder="Employer" id="employer" @bind-Value="@student.Employer" />
   <br />
 
-  <button type=" submit">Submit</button>
+  <button class="btn btn-success" type=" submit">Submit</button>
 </EditForm>
 
 @code {
