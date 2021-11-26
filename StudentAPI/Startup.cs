@@ -29,22 +29,14 @@ namespace StudentAPI
     public void ConfigureServices(IServiceCollection services)
     {
       var host = Configuration["DBHOST"] ?? "localhost";
-      var port = Configuration["DBPORT"] ?? "1444";
+      var port = Configuration["DBPORT"] ?? "1433";
       var user = Configuration["DBUSER"] ?? "sa";
       var pwd = Configuration["DBPASSWORD"] ?? "SqlExpress!";
-      var db = Configuration["DBNAME"] ?? "a2";
+      var db = Configuration["DBNAME"] ?? "StudentDB";
 
       var conStr = $"Server=tcp:{host},{port};Database={db};UID={user};PWD={pwd};";
-      services.AddDbContext<StudentDbContext>(options => options.UseSqlServer(conStr));
-
       services.AddControllers();
-      services.AddSwaggerGen(c =>
-      {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "StudentAPI", Version = "v1" });
-      });
-
-      // services.AddDbContext<SchoolDbContext>(
-      //   option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+      services.AddDbContext<StudentDbContext>(options => options.UseSqlServer(conStr));
 
       // Add Cors
       services.AddCors(o => o.AddPolicy("Policy", builder =>
@@ -62,20 +54,13 @@ namespace StudentAPI
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
-        app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "StudentAPI v1"));
       }
 
-      app.UseHttpsRedirection();
-
       app.UseRouting();
-
+      app.UseAuthorization();
       app.UseCors("Policy");
 
-      app.UseAuthorization();
-
       context.Database.Migrate();
-      // SampleData.Initialize(app);
 
       app.UseEndpoints(endpoints =>
       {

@@ -3,23 +3,45 @@ version: "3"
 services:
   db:
     image: mcr.microsoft.com/azure-sql-edge
-
-    volumes:
-      - sqlsystem:/var/opt/mssql/
-      - sqldata:/var/opt/sqlserver/data
-      - sqllog:/var/opt/sqlserver/log
-      - sqlbackup:/var/opt/sqlserver/backup
-
     ports:
       - "1433:1433"
     restart: always
-
     environment:
       ACCEPT_EULA: Y
       MSSQL_SA_PASSWORD: SqlExpress!
+    networks:
+      - secondary_bridge
 
-volumes:
-  sqlsystem: null
-  sqldata: null
-  sqllog: null
-  sqlbackup: null
+  webapi:
+    build:
+      context: ./StudentAPI
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "5000:80"
+      - "5001:443"
+    restart: always
+    environment:
+      - DBHOST=db
+      - DBPORT=1433
+      - DBUSER=sa
+      - DBPASSWORD=SqlExpress!
+      - DBNAME=StudentDB
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - secondary_bridge
+
+  wasm:
+    build:
+      context: ./StudentBlazorApp
+      dockerfile: Dockerfile
+    depends_on:
+      - webapi
+    ports:
+      - 8888:80
+    networks:
+      - secondary_bridge
+
+networks:
+  secondary_bridge: {}

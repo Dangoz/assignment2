@@ -4,35 +4,37 @@
 @inject HttpClient httpClient
 @inject NavigationManager NavManager
 
-<div><h1>Delete Student Confirmation Page</h1></div>
+<div>
+  <h1>Delete Student Confirmation Page</h1>
+</div>
 @if (student == null)
 {
-    <p><em>Loading...</em></p>
+  <p><em>Loading...</em></p>
 }
 else
 {
   <NavLink class="btn btn-primary" href="/">Return</NavLink>
   <table class='table table-hover'>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>@student.StudentId</td>
-            <td>@student.FirstName</td>
-            <td>@student.LastName</td>
-            <td><button class="btn btn-danger btn-sm" @onclick="@HandleDelete">del</button></td>
-        </tr>
-      </tbody>
-  </table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>@student.StudentId</td>
+      <td>@student.FirstName</td>
+      <td>@student.LastName</td>
+      <td><button class="btn btn-danger btn-sm" @onclick="@HandleDelete">del</button></td>
+    </tr>
+  </tbody>
+</table>
 }
 
 @code {
-  string baseUrl = "https://localhost:6001/";
+  string baseUrl = "http://localhost:5000/";
   private Student student = new Student();
   [Parameter]
   public string StudentId { get; set; }

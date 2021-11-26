@@ -4,7 +4,9 @@
 @inject HttpClient httpClient
 @inject NavigationManager NavManager
 
-<div><h1>Edit Students Page</h1></div>
+<div>
+  <h1>Edit Students Page</h1>
+</div>
 <NavLink href="/" class="btn btn-primary">Return</NavLink>
 <EditForm Model="@student" OnValidSubmit="@HandleUpdate">
   <DataAnnotationsValidator />
@@ -31,7 +33,7 @@
 </EditForm>
 
 @code {
-  string baseUrl = "https://localhost:6001/";
+  string baseUrl = "http://localhost:5000/";
   private Student student = new Student();
   [Parameter]
   public string StudentId { get; set; }
