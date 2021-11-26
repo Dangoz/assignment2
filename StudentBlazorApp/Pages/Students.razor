@@ -4,7 +4,7 @@
 
 <h1>Students</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+<p>Here is the list of students.</p>
 
 @if (students == null)
 {
@@ -12,9 +12,9 @@
 }
 else
 {
-    <a href="/add">
-    <button class="btn btn-success">Add Speaker</button>
-</a>
+    <NavLink href="/add">
+    <button class="btn btn-primary">Add Speaker</button>
+</NavLink>
     <table class='table table-hover'>
     <thead>
         <tr>
@@ -41,97 +41,10 @@ else
     </table>
 }
 
-@if (students != null && mode == MODE.Add) // Insert form // Insert form
-{
-    <EditForm Model="@student" OnValidSubmit="@HandleAdd">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <InputText placeholder="First Name" id="firstName" @bind-Value="@student.FirstName" />
-    <br />
-    <InputText placeholder="Last Name" id="lastName" @bind-Value="@student.LastName" />
-    <br />
-    <button type="submit">Submit</button>
-</EditForm>
-
-    @code {
-    private Student student = new Student();
-
-    private async void HandleAdd()
-    {
-        string endpoint = $"{baseUrl}api/students";
-
-        student.StudentId = Guid.NewGuid().ToString();
-
-        await httpClient.PostAsJsonAsync(endpoint, student);
-
-        await load();
-        StateHasChanged(); // causes the page to get automatically refreshed
-        mode = MODE.None;
-    }
-
-}
-}
-
-@if (students != null && mode == MODE.Edit) // Update
-{
-    <EditForm Model="@student" OnValidSubmit="@HandleUpdate">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <InputText placeholder="First Name" id="firstName" @bind-Value="@student.FirstName" />
-    <br />
-    <InputText placeholder="Last Name" id="lastName" @bind-Value="@student.LastName" />
-    <br />
-    <button type="submit" class="btn btn-success">Submit</button>
-
-    @code {
-        private async void HandleUpdate()
-        {
-            string endpoint = $"{baseUrl}api/students/{student.StudentId}";
-
-            await httpClient.PutAsJsonAsync(endpoint, student);
-
-            await load();
-            mode = MODE.None;
-            StateHasChanged(); // causes the page to get automatically refreshed
-        }
-    }
-</EditForm>
-}
-
-@if (students != null && mode == MODE.Delete) // Delete form
-{
-    <EditForm Model="@student" OnValidSubmit="@HandleDelete">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <InputText placeholder="First Name" id="firstName" @bind-Value="@student.FirstName" />
-    <br />
-    <InputText placeholder="Last Name" id="lastName" @bind-Value="@student.LastName" />
-    <br />
-    <button type="submit" value="Delete" class="btn btn-danger">Submit</button>
-
-    @code {
-        protected async void HandleDelete()
-        {
-            string endpoint = $"{baseUrl}api/students/{student.StudentId}";
-            await httpClient.DeleteAsync(endpoint);
-            await load();
-            mode = MODE.None;
-            StateHasChanged(); // causes the page to get automatically refreshed
-        }
-    }
-</EditForm>
-}
-
-
 @code {
     Student[] students;
     string baseUrl = "https://localhost:6001/";
     //string baseUrl = "https://localhost:44342/";
-    private enum MODE { None, Add, Edit, Delete };
-    MODE mode = MODE.None;
     Student s;
 
 
@@ -144,10 +57,5 @@ else
     {
         students = await httpClient.GetFromJsonAsync<Student[]>($"{baseUrl}api/students");
 
-    }
-
-    protected void Add()
-    {
-        mode = MODE.Add;
     }
 }

@@ -4,8 +4,8 @@
 @inject HttpClient httpClient
 @inject NavigationManager NavManager
 
-<div>Edit Form</div>
-
+<div><h1>Edit Students Page</h1></div>
+<NavLink href="/" class="btn btn-primary">Return</NavLink>
 <EditForm Model="@student" OnValidSubmit="@HandleUpdate">
   <DataAnnotationsValidator />
   <ValidationSummary />

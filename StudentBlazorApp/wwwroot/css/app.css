@@ -42,9 +42,38 @@ a, .btn-link {
     z-index: 1000;
 }
 
-    #blazor-error-ui .dismiss {
-        cursor: pointer;
-        position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
-    }
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
+
+.about-layout {
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    align-items: center;
+    justify-content: center;
+}
+.about-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.about-container:first-child {
+    margin-right: 25px;
+}
+.about-container:last-child {
+    margin-left: 25px;
+}
+.img-container {
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    object-fit: contain;
+}
+.top-row {
+    background-color: #444;
+}
